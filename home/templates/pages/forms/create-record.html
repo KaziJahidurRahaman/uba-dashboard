@@ -1,0 +1,347 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %} Create Records {% endblock title %}
+{% block extrastyle %}
+ <!-- daterange picker -->
+ <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
+ <!-- iCheck for checkboxes and radio inputs -->
+ <link rel="stylesheet" href="{% static 'plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+ <!-- Bootstrap Color Picker -->
+ <link rel="stylesheet" href="{% static 'plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css' %}">
+ <!-- Tempusdominus Bootstrap 4 -->
+ <link rel="stylesheet" href="{% static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+ <!-- Select2 -->
+ <link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+ <link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+ <!-- Bootstrap4 Duallistbox -->
+ <link rel="stylesheet" href="{% static 'plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
+ <!-- BS Stepper -->
+ <link rel="stylesheet" href="{% static 'plugins/bs-stepper/css/bs-stepper.min.css' %}">
+ <!-- dropzonejs -->
+ <link rel="stylesheet" href="{% static 'plugins/dropzone/min/dropzone.min.css' %}">
+{% endblock extrastyle %}
+
+{% block bodyclass %} hold-transition sidebar-mini {% endblock bodyclass %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Profile</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">User Profile</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- /.col -->
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                  <li class="nav-item"><a class="nav-link active" href="#create-person" data-toggle="tab">Person</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#create-instrument" data-toggle="tab">Instrument</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#create-object" data-toggle="tab">Object</a></li>
+                </ul>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content">
+                  <div class="active tab-pane" id="create-person">
+                    <form class="form-horizontal" id="personForm"> <!-- Added ID to the form -->
+                        <div class="form-group row">
+                            <label for="personName" class="col-sm-2 col-form-label">Person Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="personName" name = "personName" required placeholder="Person Name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="personInitials" class="col-sm-2 col-form-label">Person Initials</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="personInitials" name = "personInitials" required placeholder="PRSNIINTL">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="offset-sm-2 col-sm-10">
+                                <button type="submit" class="btn btn-danger">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                  <!-- /.tab-pane -->
+                  <div class="tab-pane" id="create-instrument">
+                    <form class="form-horizontal" id="instrumentForm">
+                        <div class="form-group row">
+                            <label for="instrumentSerial" class="col-sm-2 col-form-label">Serial No</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="instrumentSerial" name="serial" placeholder="SERIALNO" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="instrumentName" class="col-sm-2 col-form-label">Instrument Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="instrumentName" name="name" placeholder="Instrument Name" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="instrumentComment" class="col-sm-2 col-form-label">Instrument Comment</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="instrumentComment" name="comment" placeholder="Instrument Comment"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="offset-sm-2 col-sm-10">
+                                <button type="submit" class="btn btn-danger">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="create-object">
+                    <form class="form-horizontal" id="objectForm">
+                        <div class="form-group row">
+                            <label for="objectCode" class="col-sm-2 col-form-label">Object Code</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="objectCode" required placeholder="LM006-MNB001">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="objectCollectionDateTime" class="col-sm-2 col-form-label">Collection Date Time</label>
+                            <div class="col-sm-10">
+                                <div class="input-group date" id="objectCollectionDate" data-target-input="nearest">
+                                    <input id="objectCollectionDateTime" type="text" class="form-control datetimepicker-input" data-target="#objectCollectionDateTime"/>
+                                    <div class="input-group-append" data-target="#objectCollectionDateTime" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="objectCollector" class="col-sm-2 col-form-label">Object Collector</label>
+                          <div class="col-sm-10">
+                              <select id="objectCollector" class="form-control">
+                                  <option value="">Select Object Collector</option>
+                              </select>
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="objectInstrument" class="col-sm-2 col-form-label">Instrument</label>
+                        <div class="col-sm-10">
+                            <select id="objectInstrument" class="form-control" required>
+                                <option value="">Select Object Instrument</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="objectComment" class="col-sm-2 col-form-label">Object Comment</label>
+                      <div class="col-sm-10">
+                        <textarea class="form-control" id="objectComment" placeholder="Object Comment"></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                            <div class="offset-sm-2 col-sm-10">
+                                <button type="submit" class="btn btn-danger">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>                
+                  <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+              </div><!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+  {% endblock content %}
+
+  {% block extra_scripts %}
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <!-- Include Bootstrap Datepicker -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+  
+  <!-- Include moment.js for date manipulation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  
+  <!-- Include datetimepicker -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js"></script>
+  
+  <!-- Include Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <script>
+  $(document).ready(function(){
+    $('#objectCollectionDateInput').datetimepicker({
+      format: 'YYYY-MM-DD', // Display only date
+      icons: {
+        time: 'far fa-clock',
+        date: 'far fa-calendar-alt',
+        up: 'fas fa-chevron-up',
+        down: 'fas fa-chevron-down',
+        previous: 'fas fa-chevron-left',
+        next: 'fas fa-chevron-right',
+        today: 'fas fa-calendar-check',
+        clear: 'fas fa-trash-alt',
+        close: 'fas fa-times'
+      }
+    });
+  
+    $.ajax({
+      url: '{% url 'get-persons' %}',
+      method: 'GET',
+      dataType: 'json',
+      success: function(response) {
+        if (response && typeof response === 'object' && 'persons' in response) {
+          var persons = JSON.parse(response.persons);
+          $.each(persons, function(index, person) {
+            $('#objectCollector').append('<option value="' + person.pk + '">' +person.fields.p_initials +' : '+ person.fields.p_name + '</option>');
+          });
+        } else {
+          console.error('Invalid response format');
+        }
+        },
+        error: function(xhr, status, error) {
+          console.error(error);
+        }
+      });
+    
+    $.ajax({
+        url: '{% url 'get-instruments' %}', // URL to fetch instrument names
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            // Check if the response is valid
+            if (response && typeof response === 'object' && 'instruments' in response) {
+                // Parse the JSON string into an object
+                var instruments = JSON.parse(response.instruments);
+                // Loop through each instrument and add them as options to the dropdown
+                $.each(instruments, function(index, instrument) {
+                    $('#objectInstrument').append('<option value="' + instrument.pk + '">' + instrument.fields.instrument_serial_no+' : '+instrument.fields.instrument_name + '</option>');
+                });
+            } else {
+                console.error('Invalid response format');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+    
+    $('#personForm').submit(function(e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    // Collect form data
+    var formData = {
+        'name': $('#personName').val(),
+        'initials': $('#personInitials').val()
+    };
+    $.ajax({
+        type: 'POST',
+        url: '{% url 'save-person' %}', // URL to save the person form
+        data: formData,
+        dataType: 'json',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        success: function(response) {
+            console.log(response);
+            var savedAlert = $('<div class="alert alert-success">Saved</div>');
+            $('#create-person').prepend(savedAlert);
+            setTimeout(function() {
+                savedAlert.remove();
+            }, 3000); // Remove after 3 seconds (3000 milliseconds)
+        },
+        error: function(xhr, status, error) {
+            // Handle error
+            console.error(error);
+            var errorMessage = JSON.parse(xhr.responseText).error;
+            alert('An error occurred while saving the form.\n'+errorMessage);
+        }
+    });
+  });
+  
+  $('#instrumentForm').submit(function(e) {
+    e.preventDefault(); 
+    var formData = {
+        'serial': $('#instrumentSerial').val(),
+        'name': $('#instrumentName').val(),
+        'comment': $('#instrumentComment').val()
+    };
+    $.ajax({
+        type: 'POST',
+        url: '{% url 'save-instrument' %}', // URL to save the instrument form
+        data: formData,
+        dataType: 'json',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        success: function(response) {
+          console.log(response);
+          var savedAlert = $('<div class="alert alert-success">Saved</div>');
+          $('#create-instrument').prepend(savedAlert);
+          setTimeout(function() {
+            savedAlert.remove();
+          }, 3000); // Remove after 3 seconds (3000 milliseconds)
+        },
+        error: function(xhr, status, error) {
+          console.error(error);
+            var errorMessage = JSON.parse(xhr.responseText).error;
+            alert('An error occurred while saving the form.\n'+errorMessage);
+        }
+    });
+  });
+  $('#objectForm').submit(function(e) {
+    e.preventDefault(); 
+    var formData = {
+        'code': $('#objectCode').val(),
+        'collection_date_time': $('#objectCollectionDateTime').val(),
+        'collector': $('#objectCollector').val(),
+        'instrument': $('#objectInstrument').val(),
+        'comment': $('#objectComment').val()
+    };
+    $.ajax({
+        type: 'POST',
+        url: '{% url 'save-object' %}', // URL to save the object form
+        data: formData,
+        dataType: 'json',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        success: function(response) {
+            console.log(response);
+            var savedAlert = $('<div class="alert alert-success">Saved</div>');
+            $('#create-object').prepend(savedAlert);
+            setTimeout(function() {
+                savedAlert.remove();
+            }, 3000); // Remove after 3 seconds (3000 milliseconds)
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+            var errorMessage = JSON.parse(xhr.responseText).error;
+            alert('An error occurred while saving the form.\n'+errorMessage);
+        }
+    });
+});
+});
+    </script>
+  {% endblock extra_scripts %}
+  
