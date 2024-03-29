@@ -1,0 +1,12 @@
+  File "runme.py", line 1
+    python manage.py runserver 192.168.174.116:9999
+           ^
+SyntaxError: invalid syntax
+  File "runme.py", line 1
+    python manage.py runserver 192.168.174.116:9999
+           ^
+SyntaxError: invalid syntax
+  File "/home/mong/uba-dashboard/uba-dashboard/runme.py", line 1
+    python manage.py runserver 192.168.174.116:9999
+           ^^^^^^
+SyntaxError: invalid syntax
