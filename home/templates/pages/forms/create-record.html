@@ -437,12 +437,12 @@
         }
     });
     
-    $('#personForm').submit(function(e) {
+    $('#lysimeterSampleForm').submit(function(e) {
     e.preventDefault(); // Prevent the default form submission
 
     // Collect form data
     var formData = {
-        'name': $('#personName').val(),
+        'date': $('#personName').val(),
         'initials': $('#personInitials').val()
     };
     $.ajax({

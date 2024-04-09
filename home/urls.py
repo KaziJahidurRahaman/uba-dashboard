@@ -36,10 +36,10 @@ urlpatterns = [
 
     
 
-    path('table/reports/persons', views.getPersons, name='get-persons'),
-    path('table/reports/sampleTypes', views.getSampleTypes, name='get-sample-types'),
-    path('table/reports/instruments', views.getInstruments, name='get-instruments'),
-    path('table/reports/objects', views.getObjects, name='get-objects'),
+    path('table/get/persons', views.getPersons, name='get-persons'),
+    path('table/get/sampleTypes', views.getSampleTypes, name='get-sample-types'),
+    path('table/get/instruments', views.getInstruments, name='get-instruments'),
+    path('table/get/objects', views.getObjects, name='get-objects'),
     
 
 ]

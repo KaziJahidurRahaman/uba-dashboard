@@ -267,7 +267,7 @@
     });
   
     $.ajax({
-      url: '{% url 'get-persons' %}',
+      url: '{% url "get-persons" %}',
       method: 'GET',
       dataType: 'json',
       success: function(response) {
@@ -286,7 +286,7 @@
       });
     
     $.ajax({
-        url: '{% url 'get-instruments' %}', // URL to fetch instrument names
+        url: '{% url "get-instruments" %}', // URL to fetch instrument names
         method: 'GET',
         dataType: 'json',
         success: function(response) {
@@ -317,7 +317,7 @@
     };
     $.ajax({
         type: 'POST',
-        url: '{% url 'save-person' %}', // URL to save the person form
+        url: '{% url "save-person" %}', // URL to save the person form
         data: formData,
         dataType: 'json',
         headers: {'X-CSRFToken': '{{ csrf_token }}'},
@@ -347,7 +347,7 @@
     };
     $.ajax({
         type: 'POST',
-        url: '{% url 'save-instrument' %}', // URL to save the instrument form
+        url: '{% url "save-instrument" %}', // URL to save the instrument form
         data: formData,
         dataType: 'json',
         headers: {'X-CSRFToken': '{{ csrf_token }}'},
@@ -377,7 +377,7 @@
     };
     $.ajax({
         type: 'POST',
-        url: '{% url 'save-object' %}', // URL to save the object form
+        url: '{% url "save-object" %}', // URL to save the object form
         data: formData,
         dataType: 'json',
         headers: {'X-CSRFToken': '{{ csrf_token }}'},
@@ -405,7 +405,7 @@ $('#activityTypeForm').submit(function(e) {
     };
     $.ajax({
         type: 'POST',
-        url: '{% url 'save-activitytype' %}', // URL to save the object form
+        url: '{% url "save-activitytype" %}', // URL to save the object form
         data: formData,
         dataType: 'json',
         headers: {'X-CSRFToken': '{{ csrf_token }}'},
@@ -432,7 +432,7 @@ $('#sampleTypeForm').submit(function(e) {
     };
     $.ajax({
         type: 'POST',
-        url: '{% url 'save-sampletype' %}', // URL to save the object form
+        url: '{% url "save-sampletype" %}', // URL to save the object form
         data: formData,
         dataType: 'json',
         headers: {'X-CSRFToken': '{{ csrf_token }}'},
