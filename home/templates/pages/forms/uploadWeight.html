@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-{% block title %} Upload Samples{% endblock title %}
+{% block title %} Upload Weights{% endblock title %}
 {% block extrastyle %}
  <!-- daterange picker -->
  <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
@@ -29,13 +29,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Upload Samples Excel File</h1>
+            <h1>Upload Lysimeter Weight Excel File</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item">Uploads</li>
-              <li class="breadcrumb-item active">Lysimeter Samples</li>
+              <li class="breadcrumb-item active">Lysimeter Weights</li>
             </ol>
           </div>
         </div>
@@ -90,7 +90,6 @@
                         </p>
                         <strong class="error text-danger" data-dz-errormessage></strong>
                     </div>
-                    
                     <div class="col-4 d-flex align-items-center">
                         <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                           <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
@@ -118,7 +117,7 @@
               <!-- /.card-body -->
               <div class="card-footer">
                 <p><strong>
-                  To download the Excel Template, click <a href="{% static 'Exceltemplates/LysimeterSamplesTemplate.xlsx' %}">Here</a></strong>
+                  To download the Excel Template, click <a href="{% static 'Exceltemplates/LysimeterWeightsTemplate.xlsx' %}">Here</a></strong>
                 </p> 
               </div>
             </div>
@@ -126,7 +125,7 @@
           </div>
         </div>
         <!-- /.row -->
-
+        
         <div class="row">
           <!-- Container for the table of invalid rows -->
           <div class="invalid-rows-table" style="display: none;"></div>
@@ -169,7 +168,7 @@
 
   var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
     acceptedFiles: "text/csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
-    url: "{% url 'upload-sample-process' %}", // Set the url
+    url: "{% url 'upload-weight-process' %}", // Set the url
     paramName: "file",
     thumbnailWidth: 80,
     thumbnailHeight: 80,
@@ -213,7 +212,7 @@
   document.querySelector("#actions .cancel").onclick = function() {
     myDropzone.removeAllFiles(true)
   }
-
+  
 myDropzone.on("complete", function(file) {
     // Parse the JSON response
     var response = JSON.parse(file.xhr.response);
@@ -284,7 +283,6 @@ myDropzone.on("removedfile", function(file) {
     var tableContainer = document.querySelector(".invalid-rows-table");
     tableContainer.innerHTML = ''; // Clear error messages
 });
-  
-  // DropzoneJS Demo Code End
+
 </script>
 {% endblock extra_scripts %}

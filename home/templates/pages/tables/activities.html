@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-{% block title %}Reports | Lysimeter Weights {% endblock title %}
+{% block title %} Reports | Activities {% endblock title %}
 {% block extrastyle %}
 <!-- DataTables -->
 <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
@@ -16,13 +16,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Lysimeter Weight Records</h1>
+            <h1>Activities</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Reports</li>
-              <li class="breadcrumb-item active">Lysimeter Weights</li>
+              <li class="breadcrumb-item active">Activities</li>
             </ol>
           </div>
         </div>
@@ -39,47 +39,44 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Weights of the Lysimeters and the drainages</h3>
+                <h3 class="card-title">Activity protocols followed on the objects </h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="LysWeightsTable" class="table table-striped nowrap">
+                <table id="ActivitiesTable" class="table table-striped nowrap">
                   <thead>
                   <tr>
-                    <th>Weight ID</th>
-                    <th>Object(Lysimeter-Soil)</th>
-                    <th>Weight Date</th>
-                    <th>Weight Time</th>
-                    <th>Total Weight(kg)</th>
-                    <th>Drainage Weight(kg)</th> 
-                    <th>Recorded by</th>
-                    <th>Comment</th>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Object</th>
+                    <th>Activity Type</th>
+                    <th>Activity Comment</th>
+                    <th>Conducted By</th>
                   </tr>
                   </thead>
                   <tbody>
-                    {% for lmweight in lmweights %}
+                    {% for activity in activities %}
                     <tr>
-                      <td>{{ lmweight.objectweight_id}}</td>
-                      <td>{{ lmweight.objectweight_objectid.object_code}}</td>
-                      <td>{{ lmweight.objectweight_date }}</td>
-                      <td>{{ lmweight.objectweight_time }}</td>
-                      <td>{{ lmweight.objectweight_total }}</td>
-                      <td>{{ lmweight.objectweight_drainage }}</td>
-                      <td>{{ lmweight.objectweight_person.p_initials}}</td>
-                      <td>{{ lmweight.objectweight_comment}}</td>
+                        <td>{{activity.activity_id}}</td>
+                        <td>{{activity.activity_date}}</td>
+                        <td>{{activity.activity_time}}</td>
+                        <td>{{activity.activity_object.object_code}}</td>
+                        <td>{{activity.activity_type.activity_name}}</td>
+                        <td>{{activity.activity_comment}}</td>
+                        <td>{{activity.activity_person.p_initials}}</td>
                     </tr>
                   {% endfor %}
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th>Weight ID</th>
-                    <th>Object(Lysimeter-Soil)</th>
-                    <th>Weight Date</th>
-                    <th>Weight Time</th>
-                    <th>Total Weight(kg)</th>
-                    <th>Drainage Weight(kg)</th> 
-                    <th>Recorded by</th>
-                    <th>Comment</th>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Object</th>
+                    <th>Activity Type</th>
+                    <th>Activity Comment</th>
+                    <th>Conducted By</th>
                   </tr>
                   </tfoot>
                 </table>
@@ -111,13 +108,14 @@
 <script src="{% static 'plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <!-- Page specific script -->
 <script>
   $(document).ready(function () {
     // Setup - add a text input to each footer cell
-    $('#LysWeightsTable tfoot th').each(function (i) {
-      var title = $('#LysWeightsTable thead th')
+    $('#ActivitiesTable tfoot th').each(function (i) {
+      var title = $('#ActivitiesTable thead th')
         .eq($(this).index())
         .text();
       $(this).html(
@@ -126,30 +124,32 @@
     });
 
     // DataTable with Buttons
-    var table = $('#LysWeightsTable').DataTable({
+    var table = $('#ActivitiesTable').DataTable({
       scrollY: 'auto',
       scrollX: true,
       scrollCollapse: true,
       paging: true,
       fixedColumns: true,
       dom: 'Bfrtip',
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'
+      ],
       columnDefs: [
         {
-          targets: 2, // index of the date column
+          targets: 1, // index of the date column
           render: function (data, type, row) {
             var formattedDate = moment(data, 'MMMM DD, YYYY').format('DD/MM/YYYY');
             return formattedDate;
           }
         },
         {
-          targets: 3, // index of the time column
+          targets: 2, // index of the time column
           render: function (data, type, row) {
             var formattedTime = moment(data, 'hh:mm a').format('HH:mm:ss');
             return formattedTime;
           }
         }
-      ],
-      buttons: ['copy', 'csv', 'excel', 'pdf', 'print', 'colvis']
+      ]
     });
 
     // Filter event handler
@@ -161,20 +161,4 @@
     });
   });
 </script>
-
-
-<!-- <script>
-  
-
-
-  // $(function () {
-  //   $("#example").DataTable({
-  //     "responsive": true, "lengthChange": true, "autoWidth": true, scrollX: true,
-  //     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-  //   }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
-  // });
-
-</script> -->
-
 {% endblock extra_scripts %}

@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-{% block title %} Upload Samples{% endblock title %}
+{% block title %} Upload Activities{% endblock title %}
 {% block extrastyle %}
  <!-- daterange picker -->
  <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
@@ -29,13 +29,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Upload Samples Excel File</h1>
+            <h1>Upload Activities Excel File</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item">Uploads</li>
-              <li class="breadcrumb-item active">Lysimeter Samples</li>
+              <li class="breadcrumb-item active">Activities</li>
             </ol>
           </div>
         </div>
@@ -118,7 +118,7 @@
               <!-- /.card-body -->
               <div class="card-footer">
                 <p><strong>
-                  To download the Excel Template, click <a href="{% static 'Exceltemplates/LysimeterSamplesTemplate.xlsx' %}">Here</a></strong>
+                  To download the Excel Template, click <a href="{% static 'Exceltemplates/ActivitiesTemplate.xlsx' %}">Here</a></strong>
                 </p> 
               </div>
             </div>
@@ -126,11 +126,11 @@
           </div>
         </div>
         <!-- /.row -->
-
+        
         <div class="row">
-          <!-- Container for the table of invalid rows -->
-          <div class="invalid-rows-table" style="display: none;"></div>
-        </div>
+            <!-- Container for the table of invalid rows -->
+            <div class="invalid-rows-table" style="display: none;"></div>
+          </div>
       </div>
     </section> <!-- /.content -->
   </div>
@@ -169,7 +169,7 @@
 
   var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
     acceptedFiles: "text/csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
-    url: "{% url 'upload-sample-process' %}", // Set the url
+    url: "{% url 'upload-activity-process' %}", // Set the url
     paramName: "file",
     thumbnailWidth: 80,
     thumbnailHeight: 80,

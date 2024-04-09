@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-{% block title %} Data Tables {% endblock title %}
+{% block title %}Reports | Weather {% endblock title %}
 {% block extrastyle %}
 <!-- DataTables -->
 <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
@@ -20,8 +20,9 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">DataTables</li>
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item active">Reports</li>
+              <li class="breadcrumb-item active">Weather</li>
             </ol>
           </div>
         </div>
@@ -42,15 +43,14 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="LysSampleTable" class="table table-striped nowrap">
+                <table id="WeatherTable" class="table table-striped nowrap">
                   <thead>
                   <tr>
                     <th>ID</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>Precipitation(Niederschlagsmenge-24h)</th>
-                    <th>Evaporation (Verdunstung nach Haude-24h)</th>
-                    <th>Units</th>
+                    <th>Niederschlagsmenge-24h(mm/d)</th>
+                    <th>Verdunstung-nach-Haude-24h(mm/d)</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -61,7 +61,6 @@
                       <td>{{ weather.weather_time }}</td>
                       <td>{{ weather.weather_precipitation}}</td>
                       <td>{{ weather.weather_evaporation}}</td>
-                      <td>{{ weather.weather_date}}</td>
                     </tr>
                   {% endfor %}
                   </tbody>
@@ -72,7 +71,6 @@
                     <th>Time</th>
                     <th>Precipitation(Niederschlagsmenge-24h)</th>
                     <th>Evaporation (Verdunstung nach Haude-24h)</th>
-                    <th>Units</th>
                   </tr>
                   </tfoot>
                 </table>
@@ -104,12 +102,14 @@
 <script src="{% static 'plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <!-- Page specific script -->
 <script>
   $(document).ready(function () {
     // Setup - add a text input to each footer cell
-    $('#LysSampleTable tfoot th').each(function (i) {
-      var title = $('#LysSampleTable thead th')
+    $('#WeatherTable tfoot th').each(function (i) {
+      var title = $('#WeatherTable thead th')
         .eq($(this).index())
         .text();
       $(this).html(
@@ -118,7 +118,7 @@
     });
 
     // DataTable with Buttons
-    var table = $('#LysSampleTable').DataTable({
+    var table = $('#WeatherTable').DataTable({
       scrollY: 'auto',
       scrollX: true,
       scrollCollapse: true,
@@ -127,7 +127,23 @@
       dom: 'Bfrtip',
       buttons: [
         'copy', 'csv', 'excel', 'pdf', 'print', 'colvis'
-      ]
+      ],
+      columnDefs: [
+        {
+          targets: 1, // index of the date column
+          render: function (data, type, row) {
+            var formattedDate = moment(data, 'MMMM DD, YYYY').format('DD/MM/YYYY');
+            return formattedDate;
+          }
+        },
+        {
+          targets: 2, // index of the time column
+          render: function (data, type, row) {
+            var formattedTime = moment(data, 'hh:mm a').format('HH:mm:ss');
+            return formattedTime;
+          }
+        }
+      ],
     });
 
     // Filter event handler
@@ -139,20 +155,5 @@
     });
   });
 </script>
-
-
-<!-- <script>
-  
-
-
-  // $(function () {
-  //   $("#example").DataTable({
-  //     "responsive": true, "lengthChange": true, "autoWidth": true, scrollX: true,
-  //     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-  //   }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
-  // });
-
-</script> -->
 
 {% endblock extra_scripts %}

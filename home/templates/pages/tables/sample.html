@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-{% block title %} Reports {% endblock title %}
+{% block title %} Reports | Lysimeter Samples {% endblock title %}
 {% block extrastyle %}
 <!-- DataTables -->
 <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
@@ -21,8 +21,9 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">DataTables</li>
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item active">Reports</li>
+              <li class="breadcrumb-item active">Lysimeter Samples</li>
             </ol>
           </div>
         </div>
@@ -182,15 +183,15 @@
         {
           targets: 1, // index of the date column
           render: function (data, type, row) {
-            // Format date using moment.js
-            return moment(data).format('YYYY-MM-DD');
+            var formattedDate = moment(data, 'MMMM DD, YYYY').format('DD/MM/YYYY');
+            return formattedDate;
           }
         },
         {
           targets: 2, // index of the time column
           render: function (data, type, row) {
-            var time = moment(data, 'hh:mm a').format('HH:mm:ss');
-            return time;
+            var formattedTime = moment(data, 'hh:mm a').format('HH:mm:ss');
+            return formattedTime;
           }
         }
       ],

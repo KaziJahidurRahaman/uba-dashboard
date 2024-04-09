@@ -33,12 +33,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Profile</h1>
+            <h1>Create Records</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">User Profile</li>
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item active">Create</li>
+              <li class="breadcrumb-item active">Create Records</li>
             </ol>
           </div>
         </div>
@@ -54,62 +55,203 @@
             <div class="card">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#create-person" data-toggle="tab">Person</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#create-instrument" data-toggle="tab">Instrument</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#create-object" data-toggle="tab">Object</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="#create-lysimeterSample" data-toggle="tab">Lysimeter Sample</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#create-objectWeight" data-toggle="tab">Lysimeter Weight</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#create-weather" data-toggle="tab">Weather</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#create-activity" data-toggle="tab">Activity</a></li>
                 </ul>
-              </div><!-- /.card-header -->
+              </div>
+              <!-- /.card-header -->
               <div class="card-body">
                 <div class="tab-content">
-                  <div class="active tab-pane" id="create-person">
-                    <form class="form-horizontal" id="personForm"> <!-- Added ID to the form -->
+                  <!-- Lysimeter Sample Tab -->
+                  <div class="active tab-pane" id="create-lysimeterSample">
+                    <form class="form-horizontal" id="lysimeterSampleForm">
                         <div class="form-group row">
-                            <label for="personName" class="col-sm-2 col-form-label">Person Name</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="personName" name = "personName" required placeholder="Person Name">
+                            <label for="SamplingDate" class="col-sm-1 col-form-label">Sampling Date</label>
+                            <div class="col-sm-5">
+                                <div class="input-group date" id="SamplingDate" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input" data-target="#SamplingDate" id="SamplingDate" name="SamplingDate" required placeholder="Sampling Date"/>
+                                    <div class="input-group-append" data-target="#SamplingDate" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="SamplingTime" class="col-sm-1 col-form-label">Sampling Time</label>
+                            <div class="col-sm-5">
+                                <div class="input-group timepicker" id="samplingTime" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input" data-target="#samplingTime" id="SamplingTime" name="SamplingTime" required placeholder="Sampling Time"/>
+                                    <div class="input-group-append" data-target="#samplingTime" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <div class="form-group"> <br> </div>
+
                         <div class="form-group row">
-                            <label for="personInitials" class="col-sm-2 col-form-label">Person Initials</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="personInitials" name = "personInitials" required placeholder="PRSNIINTL">
-                            </div>
+                          <label for="SampleType" class="col-sm-1 col-form-label">Sample Type</label>
+                          <div class="col-sm-3">
+                              <select class="form-control" id="SampleType" name="SampleType" required>
+                                  <option value="">Select Sample Type</option>
+                              </select>
+                          </div>
+                          <label for="SampledObject" class="col-sm-1 col-form-label">Sampled Object</label>
+                          <div class="col-sm-3">
+                              <select class="form-control" id="SampledObject" name="SampledObject" required>
+                                  <option value="">Select Sampled Object</option>
+                              </select>
+                          </div>
+                          <label for="SampleTaker" class="col-sm-1 col-form-label">Sample Taker</label>
+                          <div class="col-sm-3">
+                              <select class="form-control" id="SampleTaker" name="SampleTaker" required>
+                                  <option value="">Select Sample Taker</option>
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group"> <br> </div>
+                        <div class="form-group row">
+                          <label for="volume" class="col-sm-1 col-form-label">Volume</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001"class="form-control" id="volume" name="volume" placeholder="Volume">
+                          </div>
+                          <label for="pH" class="col-sm-1 col-form-label">pH</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001" class="form-control" id="pH" name="pH" placeholder="pH">
+                          </div>
+                          <label for="conductivity" class="col-sm-1 col-form-label">Conductivity</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001" class="form-control" id="conductivity" name="conductivity" placeholder="Conductivity">
+                          </div>
+                          <label for="nitrite" class="col-sm-1 col-form-label">Nitrite</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001" class="form-control" id="nitrite" name="nitrite" placeholder="Nitrite">
+                          </div>
                         </div>
                         <div class="form-group row">
-                            <div class="offset-sm-2 col-sm-10">
-                                <button type="submit" class="btn btn-danger">Submit</button>
-                            </div>
+                          <label for="nitrate" class="col-sm-1 col-form-label">Nitrate</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001" class="form-control" id="nitrate" name="nitrate" placeholder="Nitrate">
+                          </div>
+                          <label for="sulfate" class="col-sm-1 col-form-label">Sulfate</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001" class="form-control" id="sulfate" name="pH" placeholder="Sulfate">
+                          </div>
+                          <label for="DOC" class="col-sm-1 col-form-label">DOC</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001" class="form-control" id="DOC" name="DOC" placeholder="DOC">
+                          </div>
+                          <label for="TOC" class="col-sm-1 col-form-label">TOC</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001" class="form-control" id="TOC" name="TOC" placeholder="TOC">
+                          </div>
                         </div>
+                        <div class="form-group row">
+                          <label for="bromide" class="col-sm-1 col-form-label">Bromide</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001" class="form-control" id="bromide" name="Nitrate" placeholder="Bromide">
+                          </div>
+                          <label for="Phosphate" class="col-sm-1 col-form-label">Phosphate</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001" class="form-control" id="Phosphate" name="pH" placeholder="Phosphate">
+                          </div>
+                          <label for="Fluorid" class="col-sm-1 col-form-label">Fluorid</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001" class="form-control" id="Fluorid" name="DOC" placeholder="Fluorid">
+                          </div>
+                          <label for="Chlorid" class="col-sm-1 col-form-label">Chlorid</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001" class="form-control" id="Chlorid" name="TOC" placeholder="Chlorid">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="2NPT" class="col-sm-1 col-form-label">2NPT</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001" class="form-control" id="2NPT" name="Nitrate" placeholder="2NPT">
+                          </div>
+                          <label for="MPA" class="col-sm-1 col-form-label">MPA</label>
+                          <div class="col-sm-2">
+                            <input type="number" step="0.0001" class="form-control" id="MPA" name="pH" placeholder="MPA">
+                          </div>
+                          <label for="SampleComment" class="col-sm-1 col-form-label">Sample Comment</label>
+                          <div class="col-sm-5">
+                            <textarea class="form-control" id="SampleComment" name="SampleComment" placeholder="Sample Comment"></textarea>
+                        </div>
+                        </div>
+                        <div class="form-group row"><br></div>
+                      <div class="form-group row">
+                        <div class="offset-sm-1 col-sm-10">
+                          <button type="submit" class="btn btn-danger">Submit</button>
+                        </div>
+                      </div>
                     </form>
                 </div>
-                  <!-- /.tab-pane -->
-                  <div class="tab-pane" id="create-instrument">
-                    <form class="form-horizontal" id="instrumentForm">
-                        <div class="form-group row">
-                            <label for="instrumentSerial" class="col-sm-2 col-form-label">Serial No</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="instrumentSerial" name="serial" placeholder="SERIALNO" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="instrumentName" class="col-sm-2 col-form-label">Instrument Name</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="instrumentName" name="name" placeholder="Instrument Name" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="instrumentComment" class="col-sm-2 col-form-label">Instrument Comment</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" id="instrumentComment" name="comment" placeholder="Instrument Comment"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="offset-sm-2 col-sm-10">
-                                <button type="submit" class="btn btn-danger">Submit</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                <!-- Lysimeter Sample Tab Ends-->
+                
+                <!-- Lysimeter Weights Tab -->
+                <div class="tab-pane" id="create-objectWeight">
+                  <form class="form-horizontal" id="objectWeightForm">
+                      <div class="form-group row">
+                          <label for="ObjectWeightDate" class="col-sm-1 col-form-label">Weighting Date</label>
+                          <div class="col-sm-5">
+                              <div class="input-group date" id="ObjectWeightDate" data-target-input="nearest">
+                                  <input type="text" class="form-control datetimepicker-input" data-target="#ObjectWeightDate" id="ObjectWeightDate" name="ObjectWeightDate" required placeholder="Object Weight Date"/>
+                                  <div class="input-group-append" data-target="#ObjectWeightDate" data-toggle="datetimepicker">
+                                      <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                  </div>
+                              </div>
+                          </div>
+                          <label for="ObjectWeightTime" class="col-sm-1 col-form-label">Weighting Time</label>
+                          <div class="col-sm-5">
+                              <div class="input-group timepicker" id="ObjectWeightTime" data-target-input="nearest">
+                                  <input type="text" class="form-control datetimepicker-input" data-target="#ObjectWeightTime" id="ObjectWeightTime" name="ObjectWeightTime" required placeholder="Object Weight Time"/>
+                                  <div class="input-group-append" data-target="#ObjectWeightTime" data-toggle="datetimepicker">
+                                      <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="form-group"> <br> </div>
+              
+                      <div class="form-group row">
+                          <label for="ObjectID" class="col-sm-1 col-form-label">Object ID</label>
+                          <div class="col-sm-3">
+                              <select class="form-control" id="ObjectID" name="ObjectID" required>
+                                  <option value="">Select Object</option>
+                              </select>
+                          </div>
+                          <label for="ObjectWeightTotal" class="col-sm-1 col-form-label">Total Weight</label>
+                          <div class="col-sm-2">
+                              <input type="number" step="0.0001" class="form-control" id="ObjectWeightTotal" name="ObjectWeightTotal" placeholder="Total Weight">
+                          </div>
+                          <label for="ObjectWeightDrainage" class="col-sm-1 col-form-label">Drainage</label>
+                          <div class="col-sm-2">
+                              <input type="number" step="0.0001" class="form-control" id="ObjectWeightDrainage" name="ObjectWeightDrainage" placeholder="Drainage">
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label for="ObjectWeightPerson" class="col-sm-1 col-form-label">Person</label>
+                          <div class="col-sm-3">
+                              <select class="form-control" id="ObjectWeightPerson" name="ObjectWeightPerson" required>
+                                  <option value="">Select Person</option>
+                                  <!-- Add options dynamically here if needed -->
+                              </select>
+                          </div>
+                          <label for="ObjectWeightComment" class="col-sm-1 col-form-label">Comment</label>
+                          <div class="col-sm-5">
+                              <textarea class="form-control" id="ObjectWeightComment" name="ObjectWeightComment" placeholder="Object Weight Comment"></textarea>
+                          </div>
+                      </div>
+                      <div class="form-group row"><br></div>
+                      <div class="form-group row">
+                          <div class="offset-sm-1 col-sm-10">
+                              <button type="submit" class="btn btn-danger">Submit</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              
+                
                 <!-- /.tab-pane -->
                 <div class="tab-pane" id="create-object">
                     <form class="form-horizontal" id="objectForm">
@@ -196,10 +338,9 @@
   
   <script>
   $(document).ready(function(){
-    $('#objectCollectionDateInput').datetimepicker({
-      format: 'YYYY-MM-DD', // Display only date
+    $('#SamplingDate').datetimepicker({
+      format: 'DD/MM/YYYY', // Display only date
       icons: {
-        time: 'far fa-clock',
         date: 'far fa-calendar-alt',
         up: 'fas fa-chevron-up',
         down: 'fas fa-chevron-down',
@@ -207,41 +348,85 @@
         next: 'fas fa-chevron-right',
         today: 'fas fa-calendar-check',
         clear: 'fas fa-trash-alt',
-        close: 'fas fa-times'
       }
     });
-  
-    $.ajax({
-      url: '{% url 'get-persons' %}',
-      method: 'GET',
-      dataType: 'json',
-      success: function(response) {
-        if (response && typeof response === 'object' && 'persons' in response) {
-          var persons = JSON.parse(response.persons);
-          $.each(persons, function(index, person) {
-            $('#objectCollector').append('<option value="' + person.pk + '">' +person.fields.p_initials +' : '+ person.fields.p_name + '</option>');
-          });
-        } else {
-          console.error('Invalid response format');
+
+
+    $('#samplingTime').datetimepicker({
+      format: 'HH:mm',
+      icons: {
+          time: 'far fa-clock',
+          date: 'far fa-calendar-alt',
+          up: 'fas fa-chevron-up',
+          down: 'fas fa-chevron-down',
+          previous: 'fas fa-chevron-left',
+          next: 'fas fa-chevron-right',
+          today: 'fas fa-calendar-check',
+          clear: 'fas fa-trash-alt',
+          close: 'fas fa-times'
         }
+      });
+
+    
+    
+      // Get Sample Types for Lysimeter Samples form
+      $.ajax({
+        url: '{% url "get-sample-types" %}',
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+          if (response && typeof response === 'object' && 'sampleTypes' in response) {
+            var sampleTypes = JSON.parse(response.sampleTypes);
+            $.each(sampleTypes, function(index, sampleType) {
+              $('#SampleType').append('<option value="' + sampleType.pk + '">' +sampleType.fields.sample_type_code +' : '+ sampleType.fields.description + '</option>');
+            });
+          } else {
+            console.error('Invalid response format');
+          }
         },
         error: function(xhr, status, error) {
           console.error(error);
         }
       });
-    
+      
+
+
+      // Get objects for Lysimeter sampled object
+      $.ajax({
+        url: "{% url 'get-objects' %}",
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+          if (response && typeof response === 'object' && 'Objects' in response) {
+            var Objects = JSON.parse(response.Objects);
+            $.each(Objects, function(index, SampledObject) {
+              console.log(SampledObject.pk)
+              $('#SampledObject').append('<option value="' + SampledObject.pk + '">' +SampledObject.fields.object_code +' : '+ SampledObject.fields.object_comment + '</option>');
+            });
+          } else {
+            console.error('Invalid response format');
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error(error);
+        }
+      });
+
+
+
+// Get persons for Lysimeter samples sample taker
     $.ajax({
-        url: '{% url 'get-instruments' %}', // URL to fetch instrument names
+        url: "{% url 'get-persons' %}", // URL to fetch instrument names
         method: 'GET',
         dataType: 'json',
         success: function(response) {
             // Check if the response is valid
-            if (response && typeof response === 'object' && 'instruments' in response) {
+            if (response && typeof response === 'object' && 'persons' in response) {
                 // Parse the JSON string into an object
-                var instruments = JSON.parse(response.instruments);
+                var persons = JSON.parse(response.persons);
                 // Loop through each instrument and add them as options to the dropdown
-                $.each(instruments, function(index, instrument) {
-                    $('#objectInstrument').append('<option value="' + instrument.pk + '">' + instrument.fields.instrument_serial_no+' : '+instrument.fields.instrument_name + '</option>');
+                $.each(persons, function(index, person) {
+                    $('#SampleTaker').append('<option value="' + person.pk + '">' + person.fields.p_name+' : '+person.fields.p_initials + '</option>');
                 });
             } else {
                 console.error('Invalid response format');
