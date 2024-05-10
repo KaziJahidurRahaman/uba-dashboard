@@ -41,5 +41,14 @@ urlpatterns = [
     path('table/get/instruments', views.getInstruments, name='get-instruments'),
     path('table/get/objects', views.getObjects, name='get-objects'),
     
-
+    path('table/delete/sample', views.deleteSample, name='delete-sample'),
+    path('table/delete/activity', views.deleteActivity, name='delete-activity'),
+    path('table/delete/weight', views.deleteWeight, name='delete-weight'),
+    path('table/delete/weather', views.deleteWeather, name='delete-weather'),
+    path('table/delete/object', views.deleteObject, name='delete-object'),
+    path('table/delete/instrument', views.deleteInstrument, name='delete-instrument'),
+    path('table/delete/person', views.deletePerson, name='delete-person'),
+    # path('table/get/sampleTypes', views.getSampleTypes, name='get-sample-types'),
+    # path('table/get/instruments', views.getInstruments, name='get-instruments'),
+    # path('table/get/objects', views.getObjects, name='get-objects'),
 ]

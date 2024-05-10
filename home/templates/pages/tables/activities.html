@@ -44,9 +44,10 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="ActivitiesTable" class="table table-striped nowrap">
+                  {% csrf_token %}
                   <thead>
                   <tr>
-                    <th>ID</th>
+                    <th>Actions</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th>Object</th>
@@ -58,7 +59,7 @@
                   <tbody>
                     {% for activity in activities %}
                     <tr>
-                        <td>{{activity.activity_id}}</td>
+                      <td><button type="button" class="btn btn-danger btn-sm delete-activity" data-activity-id="{{ activity.activity_id }}"><i class="fas fa-trash"></i></button></td>
                         <td>{{activity.activity_date}}</td>
                         <td>{{activity.activity_time}}</td>
                         <td>{{activity.activity_object.object_code}}</td>
@@ -70,7 +71,7 @@
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th>ID</th>
+                    <th>Actions</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th>Object</th>
@@ -159,6 +160,32 @@
         .search(this.value)
         .draw();
     });
+    $('#ActivitiesTable tbody').on('click', '.delete-activity', function () {
+      var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+      var activityId= $(this).data('activity-id');
+      console.log('Delete activity clicked. Activity ID: ' + activityId);
+      var $row = $(this).closest("tr");
+      $.ajax({
+        url: '{% url "delete-activity" %}',
+        method: 'POST',
+        headers: {"X-CSRFToken": csrftoken},
+        data: {activity_id: activityId},
+        success: function (response) {
+          console.log(response)
+          if (response.success) {
+            console.log('Activity deleted successfully');
+            // table.ajax.reload();
+            $('#ActivitiesTable tbody').find('[data-activity-id="' + activityId + '"]').closest('tr').remove();
+
+          } else {
+            console.error('Error deleting activity:', response.error);
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('Error deleting activity:', error);
+        }
+      });
+  });
   });
 </script>
 {% endblock extra_scripts %}

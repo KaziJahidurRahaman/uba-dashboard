@@ -44,9 +44,10 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="LysWeightsTable" class="table table-striped nowrap">
+                  {% csrf_token %}
                   <thead>
                   <tr>
-                    <th>Weight ID</th>
+                    <th>Actions</th>
                     <th>Object(Lysimeter-Soil)</th>
                     <th>Weight Date</th>
                     <th>Weight Time</th>
@@ -59,7 +60,9 @@
                   <tbody>
                     {% for lmweight in lmweights %}
                     <tr>
-                      <td>{{ lmweight.objectweight_id}}</td>
+                      <td>
+                        <button type="button" class="btn btn-danger btn-sm delete-weight" data-weight-id="{{ lmweight.objectweight_id }}"><i class="fas fa-trash"></i></button>
+                      </td>
                       <td>{{ lmweight.objectweight_objectid.object_code}}</td>
                       <td>{{ lmweight.objectweight_date }}</td>
                       <td>{{ lmweight.objectweight_time }}</td>
@@ -72,7 +75,7 @@
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th>Weight ID</th>
+                    <th>Actions</th>
                     <th>Object(Lysimeter-Soil)</th>
                     <th>Weight Date</th>
                     <th>Weight Time</th>
@@ -159,22 +162,31 @@
         .search(this.value)
         .draw();
     });
+    $('#LysWeightsTable tbody').on('click', '.delete-weight', function () {
+      var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+      var weightId= $(this).data('weight-id');
+      console.log('Delete weight clicked. weight ID: ' + weightId);
+      var $row = $(this).closest("tr");
+      $.ajax({
+        url: '{% url "delete-weight" %}',
+        method: 'POST',
+        headers: {"X-CSRFToken": csrftoken},
+        data: {weight_id: weightId},
+        success: function (response) {
+          console.log(response)
+          if (response.success) {
+            console.log('Weight deleted successfully');
+            $('#LysWeightsTable tbody').find('[data-weight-id="' + weightId + '"]').closest('tr').remove();
+
+          } else {
+            console.error('Error deleting weight:', response.error);
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('Error deleting weight:', error);
+        }
+      });
+    });
   });
 </script>
-
-
-<!-- <script>
-  
-
-
-  // $(function () {
-  //   $("#example").DataTable({
-  //     "responsive": true, "lengthChange": true, "autoWidth": true, scrollX: true,
-  //     "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-  //   }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
-  // });
-
-</script> -->
-
 {% endblock extra_scripts %}

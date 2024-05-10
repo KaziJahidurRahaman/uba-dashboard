@@ -6,6 +6,8 @@ from django.core import serializers
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
+from django.shortcuts import get_object_or_404
 import mimetypes
 import datetime
 from django.utils import timezone
@@ -626,3 +628,166 @@ def uploadActivityProcess(request):
                 return JsonResponse({'success': 'All rows uploaded successfully!'}, status=200)
     else:
         return JsonResponse({'error': 'No file uploaded or invalid request method!'}, status=400)
+    
+
+
+def deleteSample(request):
+    if request.method == 'POST':
+        sample_id = request.POST.get('sample_id')
+        
+        # Ensure that sample_id is provided
+        if not sample_id:
+            return JsonResponse({'error': 'Sample ID is required'}, status=400)
+        
+        try:
+            sample = Sample.objects.get(sample_id=sample_id)
+            sample.delete()
+            return JsonResponse({'success': 'Sample deleted successfully'}, status=200)
+        except Sample.DoesNotExist:
+            return JsonResponse({'error': 'Sample not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': 'Failed to delete sample', 'details': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+    
+
+def deleteActivity(request):
+    if request.method == 'POST':
+        activity_id = request.POST.get('activity_id')
+        
+        # Ensure that sample_id is provided
+        if not activity_id:
+            return JsonResponse({'error': 'activity_id is required'}, status=400)
+        
+        try:
+            activity = Activity.objects.get(activity_id=activity_id)
+            activity.delete()
+            return JsonResponse({'success': 'Activity deleted successfully'}, status=200)
+        except Activity.DoesNotExist:
+            return JsonResponse({'error': 'Activity not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': 'Failed to delete activity', 'details': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+    
+
+def deleteWeight(request):
+    if request.method == 'POST':
+        Weight_id = request.POST.get('weight_id')
+        
+        # Ensure that sample_id is provided
+        if not Weight_id:
+            return JsonResponse({'error': 'WeightID is required'}, status=400)
+        
+        try:
+            weight = ObjectWeight.objects.get(objectweight_id=Weight_id)
+            weight.delete()
+            return JsonResponse({'success': 'Weight deleted successfully'}, status=200)
+        except ObjectWeight.DoesNotExist:
+            return JsonResponse({'error': 'Weight not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': 'Failed to delete Weight', 'details': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+def deleteWeather(request):
+    print('Deleteweather')
+    if request.method == 'POST':
+        weather_id = request.POST.get('weather_id')
+        
+        # Ensure that sample_id is provided
+        if not weather_id:
+            return JsonResponse({'error': 'Weather ID is required'}, status=400)
+        
+        try:
+            weather = Weather.objects.get(weather_id=weather_id)
+            weather.delete()
+            return JsonResponse({'success': 'Weather deleted successfully'}, status=200)
+        except Weather.DoesNotExist:
+            return JsonResponse({'error': 'Weather not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': 'Failed to delete Weather', 'details': str(e)}, status=500)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+    
+def deleteObject(request):
+    if request.method == 'POST':
+        object_id = request.POST.get('object_id')
+        
+        # Ensure that object_id is provided
+        if not object_id:
+            return JsonResponse({'error': 'Object ID is required'}, status=400)
+        
+        try:
+            ob = Object.objects.get(object_id=object_id)
+            ob.delete()
+            return JsonResponse({'success': 'Object deleted successfully'}, status=200)
+        except Object.DoesNotExist:
+            return JsonResponse({'error': 'Object not found'}, status=404)
+        except IntegrityError as e:
+            # Catching IntegrityError to handle foreign key constraint failure
+            print('Failed to delete Object:', e)
+            return JsonResponse({'error': 'Failed to delete Object. This object is referenced by other records.', 'details': str(e)}, status=409)
+        except Exception as e:
+            print('Failed to delete Object:', e)
+            return JsonResponse({'error': 'Failed to delete Object. Contact Admin.', 'details': str(e)}, status=500)
+    else:
+        print('Invalid request method')
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+    
+    
+def deleteInstrument(request):
+    if request.method == 'POST':
+        instrument_id = request.POST.get('instrument_id')
+        print(instrument_id)
+        # Ensure that object_id is provided
+        if not instrument_id:
+            return JsonResponse({'error': 'Instrument ID is required'}, status=400)
+        
+        try:
+            ob = Instrument.objects.get(instrument_id=instrument_id)
+            ob.delete()
+            return JsonResponse({'success': 'Instrument deleted successfully'}, status=200)
+        except Instrument.DoesNotExist:
+            print('Instrument does not exist')
+            return JsonResponse({'error': 'Instrument not found'}, status=404)
+        except IntegrityError as e:
+            print('integrity error', e)
+            # Catching IntegrityError to handle foreign key constraint failure
+            return JsonResponse({'error': 'Failed to delete Instrument. This Instrument is referenced by other records.', 'details': str(e)}, status=409)
+        except Exception as e:
+            print('Other error:', e)
+            return JsonResponse({'error': 'Failed to delete Instrument. Contact Admin.', 'details': str(e)}, status=500)
+    else:
+        print('Invalid request method')
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+    
+
+def deletePerson(request):
+    if request.method == 'POST':
+        person_id = request.POST.get('person_id')
+        
+        # Ensure that object_id is provided
+        if not person_id:
+            return JsonResponse({'error': 'Person ID is required'}, status=400)
+        
+        try:
+            ob = Person.objects.get(p_id=person_id)
+            ob.delete()
+            return JsonResponse({'success': 'Person deleted successfully'}, status=200)
+        except Instrument.DoesNotExist:
+            return JsonResponse({'error': 'Person not found'}, status=404)
+        except IntegrityError as e:
+            # Catching IntegrityError to handle foreign key constraint failure
+            print('Failed to delete Person:', e)
+            return JsonResponse({'error': 'Failed to delete Person. This Person is referenced by other records.', 'details': str(e)}, status=409)
+        except Exception as e:
+            print('Failed to delete Person:', e)
+            return JsonResponse({'error': 'Failed to delete Person. Contact Admin.', 'details': str(e)}, status=500)
+    else:
+        print('Invalid request method')
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+    
+
+
+    

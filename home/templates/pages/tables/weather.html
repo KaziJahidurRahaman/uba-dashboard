@@ -44,9 +44,10 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="WeatherTable" class="table table-striped nowrap">
+                  {% csrf_token %}
                   <thead>
                   <tr>
-                    <th>ID</th>
+                    <th>Actions</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th>Niederschlagsmenge-24h(mm/d)</th>
@@ -56,7 +57,7 @@
                   <tbody>
                     {% for weather in weathers %}
                     <tr>
-                      <td>{{ weather.weather_id }}</td>
+                      <td><button type="button" class="btn btn-danger btn-sm delete-weather" data-weather-id="{{ weather.weather_id }}"><i class="fas fa-trash"></i></button></td>
                       <td>{{ weather.weather_date }}</td>
                       <td>{{ weather.weather_time }}</td>
                       <td>{{ weather.weather_precipitation}}</td>
@@ -66,7 +67,7 @@
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th>ID</th>
+                    <th>Actions</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th>Precipitation(Niederschlagsmenge-24h)</th>
@@ -102,7 +103,6 @@
 <script src="{% static 'plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <!-- Page specific script -->
 <script>
@@ -152,6 +152,31 @@
         .column($(this).data('index'))
         .search(this.value)
         .draw();
+    });
+
+    $('#WeatherTable tbody').on('click', '.delete-weather', function () {
+      var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+      var weatherId= $(this).data('weather-id');
+      var $row = $(this).closest("tr");
+      $.ajax({
+        url: '{% url "delete-weather" %}',
+        method: 'POST',
+        headers: {"X-CSRFToken": csrftoken},
+        data: {weather_id: weatherId},
+        success: function (response) {
+          console.log(response)
+          if (response.success) {
+            console.log('Weather deleted successfully');
+            $('#WeatherTable tbody').find('[data-weather-id="' + weatherId + '"]').closest('tr').remove();
+
+          } else {
+            console.error('Error deleting weather:', response.error);
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('Error deleting weather:', error);
+        }
+      });
     });
   });
 </script>

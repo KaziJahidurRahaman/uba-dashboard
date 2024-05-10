@@ -1,0 +1,30 @@
+# Django-related files
+*.pyc
+*.pyo
+*.pyc
+__pycache__/
+*.sqlite3
+
+# Editor/IDE files
+.vscode/
+*.sublime-workspace
+*.sublime-project
+*.idea/
+*.iml
+
+# Environment related files
+.env
+
+# Temporary files
+*.bak
+*.swp
+*~
+
+# Log files
+*.log
+logs/
+
+# Other
+db.sqlite3
+/staticfiles/
+/media/

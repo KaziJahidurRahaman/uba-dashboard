@@ -6,6 +6,8 @@
 <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
 <link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
 <link rel="stylesheet" href="{% static 'plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 
 {% endblock extrastyle %}
 {% block bodyclass %} hold-transition sidebar-mini {% endblock bodyclass %}
@@ -35,19 +37,18 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            
             <!-- /.card -->
-
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Measurement Samples from Lysimeters</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="LysSampleTable" class="table table-striped nowrap">
+                <table id="LysSampleTable" class="table table-hover">
+                  {% csrf_token %}
                   <thead>
                   <tr>
-                    <th>SampleID</th>
+                    <th>Actions</th>
                     <th>SamplingDate</th>
                     <th>SamplingTime</th>
                     <th>SampleType</th>
@@ -73,7 +74,9 @@
                   <tbody>
                     {% for sample in samples %}
                     <tr>
-                      <td>{{ sample.sample_id }}</td>
+                      <td>
+                        <button type="button" class="btn btn-danger btn-sm delete-sample" data-sample-id="{{ sample.sample_id }}"><i class="fas fa-trash"></i></button>
+                      </td>
                       <td>{{ sample.sample_date }}</td>
                       <td>{{ sample.sample_time }}</td>
                       <td>{{ sample.sample_type.sample_type_code}}</td>
@@ -99,7 +102,7 @@
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th>SampleID</th>
+                    <th>Actions</th>
                     <th>SamplingDate</th>
                     <th>SamplingTime</th>
                     <th>SampleType</th>
@@ -159,7 +162,6 @@
 <!-- Page specific script -->
 <script>
   $(document).ready(function () {
-    // Setup - add a text input to each footer cell
     $('#LysSampleTable tfoot th').each(function (i) {
       var title = $('#LysSampleTable thead th')
         .eq($(this).index())
@@ -179,6 +181,7 @@
       scrollX: true,
       scrollCollapse: true,
       paging: true,
+      
       columnDefs: [
         {
           targets: 1, // index of the date column
@@ -209,7 +212,41 @@
         .search(this.value)
         .draw();
     });
+
+    // Edit and Delete button event handlers
+    $('#LysSampleTable tbody').on('click', '.edit-sample', function () {
+      var sampleId = $(this).data('sample-id');
+      // Add your edit logic here, for example, redirecting to an edit page with the sampleId
+      console.log('Edit sample clicked. Sample ID: ' + sampleId);
+    });
+
+    $('#LysSampleTable tbody').on('click', '.delete-sample', function () {
+      var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+      var sampleId = $(this).data('sample-id');
+      console.log('Delete sample clicked. Sample ID: ' + sampleId);
+      var $row = $(this).closest("tr");
+      $.ajax({
+        url: '{% url "delete-sample" %}',
+        method: 'POST',
+        headers: {"X-CSRFToken": csrftoken},
+        data: {sample_id: sampleId},
+        success: function (response) {
+          console.log(response)
+          if (response.success) {
+            console.log('Sample deleted successfully');
+            // table.ajax.reload();
+            $('#LysSampleTable tbody').find('[data-sample-id="' + sampleId + '"]').closest('tr').remove();
+
+          } else {
+            console.error('Error deleting sample:', response.error);
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('Error deleting sample:', error);
+        }
+      });
   });
+});
 </script>
 
 <!-- <script>

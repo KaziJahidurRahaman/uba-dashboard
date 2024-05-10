@@ -44,9 +44,10 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="instrumentsTable" class="table table-striped nowrap" style="width: 100%;">
+                  {% csrf_token %}
                   <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Actions</th>
                         <th>SerialNo</th>
                         <th>InstrumentName</th>
                         <th>Comment</th>
@@ -55,7 +56,7 @@
                   <tbody>
                     {% for instrument in instruments %}
                     <tr>
-                      <td>{{ instrument.instrument_id }}</td>
+                      <td><button type="button" class="btn btn-danger btn-sm delete-instrument" data-instrument-id="{{ instrument.instrument_id }}"><i class="fas fa-trash"></i></button></td>
                       <td>{{ instrument.instrument_serial_no }}</td>
                       <td>{{ instrument.instrument_name}}</td>
                       <td>{{ instrument.instrument_comment}}</td>
@@ -64,7 +65,7 @@
                   </tbody>
                   <tfoot>
                     <tr>
-                        <th>ID</th>
+                        <th>Actions</th>
                         <th>SerialNo</th>
                         <th>InstrumentName</th>
                         <th>Comment</th>
@@ -133,6 +134,37 @@
         .search(this.value)
         .draw();
     });
+
+    $('#instrumentsTable tbody').on('click', '.delete-instrument', function () {
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+    var instrumentId = $(this).data('instrument-id');
+    console.log('Delete instrument clicked. Instrument ID: ' + instrumentId);
+    var $row = $(this).closest("tr");
+    
+    $.ajax({
+        url: '{% url "delete-instrument" %}',
+        method: 'POST',
+        headers: {"X-CSRFToken": csrftoken},
+        data: {instrument_id: instrumentId},
+        success: function (response) {
+            console.log(response);
+            if (response.success) {
+                console.log('Instrument deleted successfully');
+                // Remove the deleted row from the table
+                $row.remove();
+            } else {
+                console.error('Error deleting instrument:', response.error, response);
+                // Display the error message to the user
+                alert('Error deleting instrument: ' + response.error + response.details +' Contact Administrator');
+            }
+        },
+        error: function (xhr, status, error, details) {
+            console.error('Error deleting instrument:', error, xhr, status);
+            // Display the error message to the user
+            alert('Error deleting instrument: ' + error +' ' + details + ' Contact Administrator');
+        }
+    });
+  });
   });
 </script>
 

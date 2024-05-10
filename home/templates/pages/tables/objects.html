@@ -43,10 +43,11 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                {% csrf_token %}
                 <table id="objectsTable" class="table table-striped nowrap">
                   <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Actions</th>
                         <th>ObjectCode</th>
                         <th>ObjectInstrument</th>
                         <th>ObjectCollector</th>
@@ -58,7 +59,7 @@
                   <tbody>
                     {% for object in objects %}
                     <tr>
-                      <td>{{ object.object_id }}</td>
+                      <td><button type="button" class="btn btn-danger btn-sm delete-object" data-object-id="{{ object.object_id }}"><i class="fas fa-trash"></i></button></td>
                       <td>{{ object.object_code }}</td>
                       <td>{{ object.object_instrument.instrument_serial_no}}</td>
                       <td>{{ object.object_collector.p_initials}}</td>
@@ -70,7 +71,7 @@
                   </tbody>
                   <tfoot>
                     <tr>
-                        <th>ID</th>
+                        <th>Actions</th>
                         <th>ObjectCode</th>
                         <th>ObjectInstrument</th>
                         <th>ObjectCollector</th>
@@ -158,7 +159,38 @@
         .search(this.value)
         .draw();
     });
+
+    $('#objectsTable tbody').on('click', '.delete-object', function () {
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+    var objectId = $(this).data('object-id');
+    console.log('Delete object clicked. Object ID: ' + objectId);
+    var $row = $(this).closest("tr");
+    
+    $.ajax({
+        url: '{% url "delete-object" %}',
+        method: 'POST',
+        headers: {"X-CSRFToken": csrftoken},
+        data: {object_id: objectId},
+        success: function (response) {
+            console.log(response);
+            if (response.success) {
+                console.log('Object deleted successfully');
+                // Remove the deleted row from the table
+                $row.remove();
+            } else {
+                console.error('Error deleting object:', response.error, response);
+                // Display the error message to the user
+                alert('Error deleting object: ' + response.error + response.details +' Contact Administrator');
+            }
+        },
+        error: function (xhr, status, error, details) {
+            console.error('Error deleting object:', error, xhr, status);
+            // Display the error message to the user
+            alert('Error deleting object: ' + error +' ' + details + ' Contact Administrator');
+        }
+    });
   });
+});
 </script>
 
 {% endblock extra_scripts %}

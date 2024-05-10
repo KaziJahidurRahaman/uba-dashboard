@@ -49,9 +49,10 @@
                     </p>
                 </h6>
                 <table id="personsTable" class="table table-striped nowrap" style="width: 100%;">
+                  {% csrf_token %}
                   <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Actions</th>
                         <th>Initials</th>
                         <th>Name</th>
                     </tr>
@@ -59,7 +60,7 @@
                   <tbody>
                     {% for person in persons %}
                     <tr>
-                      <td>{{ person.p_id }}</td>
+                      <td><button type="button" class="btn btn-danger btn-sm delete-person" data-person-id="{{ person.p_id }}"><i class="fas fa-trash"></i></button></td>
                       <td>{{ person.p_initials }}</td>
                       <td>{{ person.p_name}}</td>
                     </tr>
@@ -67,7 +68,7 @@
                   </tbody>
                   <tfoot>
                     <tr>
-                        <th>ID</th>
+                        <th>Actions</th>
                         <th>Initials</th>
                         <th>Name</th>
                     </tr>
@@ -135,7 +136,37 @@
         .search(this.value)
         .draw();
     });
+    $('#personsTable tbody').on('click', '.delete-person', function () {
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+    var personId = $(this).data('person-id');
+    console.log('Delete person clicked. Person ID: ' + personId);
+    var $row = $(this).closest("tr");
+    
+    $.ajax({
+        url: '{% url "delete-person" %}',
+        method: 'POST',
+        headers: {"X-CSRFToken": csrftoken},
+        data: {person_id: personId},
+        success: function (response) {
+            console.log(response);
+            if (response.success) {
+                console.log('Person deleted successfully');
+                // Remove the deleted row from the table
+                $row.remove();
+            } else {
+                console.error('Error deleting person:', response.error, response);
+                // Display the error message to the user
+                alert('Error deleting person: ' + response.error + response.details +'. Contact Administrator');
+            }
+        },
+        error: function (xhr, status, error, details) {
+            console.error('Error deleting person:', error, xhr, status);
+            // Display the error message to the user
+            alert('Error deleting person: ' + error +': ' + details + '. Contact Administrator');
+        }
+    });
   });
+});
 </script>
 
 {% endblock extra_scripts %}
