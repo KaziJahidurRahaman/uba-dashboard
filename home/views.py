@@ -48,6 +48,7 @@ def index(request):
 
 
 # Create Elements
+@login_required
 def createElement(request):
     context = {
         'parent': 'create',
@@ -56,6 +57,7 @@ def createElement(request):
     return render(request, 'pages/forms/create-element.html', context)
 
 @require_POST
+@login_required
 def savePerson(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -80,6 +82,7 @@ def savePerson(request):
         return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @require_POST
+@login_required
 def saveInstrument(request):
     if request.method == 'POST':
         serial_no = request.POST.get('serial')
@@ -104,6 +107,7 @@ def saveInstrument(request):
         return JsonResponse({'error': 'Invalid request method'}, status=405)
     
 @require_POST
+@login_required
 def saveObject(request):
     if request.method == 'POST':
         code = request.POST.get('code')
@@ -147,6 +151,7 @@ def saveObject(request):
         return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @require_POST
+@login_required
 def saveActivityType(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -175,6 +180,7 @@ def saveActivityType(request):
         return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @require_POST
+@login_required
 def saveSampleType(request):
     if request.method == 'POST':
         code = request.POST.get('code')
@@ -204,6 +210,7 @@ def saveSampleType(request):
 
 
 # Create Records
+@login_required
 def createRecord(request):
     context = {
         'parent': 'create',
@@ -215,7 +222,7 @@ def createRecord(request):
     
 
 
-
+@login_required
 def get_lm_samples(request):
     samples = Sample.objects.select_related('sample_person', 'sample_object', 'sample_type').all()
     context = {
@@ -225,6 +232,7 @@ def get_lm_samples(request):
     }
     return render(request, 'pages/tables/sample.html', context)
 
+@login_required
 def get_lm_weights(request):
     lmweights = ObjectWeight.objects.select_related('objectweight_objectid', 'objectweight_person').all()
     context = {
@@ -234,6 +242,7 @@ def get_lm_weights(request):
     }
     return render(request, 'pages/tables/lysimeterweight.html', context)
 
+@login_required
 def get_weather(request):
     weathers = Weather.objects.all()
     context = {
@@ -243,6 +252,7 @@ def get_weather(request):
     }
     return render(request, 'pages/tables/weather.html', context)
 
+@login_required
 def get_activities(request):
     activities = Activity.objects.all()
     
@@ -253,11 +263,13 @@ def get_activities(request):
     }
     return render(request, 'pages/tables/activities.html', context)
 
+@login_required
 def getPersons(request):
     persons = Person.objects.all()
     data = serializers.serialize('json', persons)
     return JsonResponse({'persons': data}, safe=False)
 
+@login_required
 def get_persons_report(request):
     persons = Person.objects.all()
     
@@ -268,14 +280,14 @@ def get_persons_report(request):
     }
     return render(request, 'pages/tables/persons.html', context)
 
-
+@login_required
 def getInstruments(request):
     instruments = Instrument.objects.all()
     data = serializers.serialize('json', instruments)
     return JsonResponse({'instruments': data}, safe=False)
 
 
-
+@login_required
 def get_instruments_report(request):
     instruments = Instrument.objects.all()
     
@@ -287,20 +299,20 @@ def get_instruments_report(request):
     return render(request, 'pages/tables/instruments.html', context)
 
 
-
+@login_required
 def getSampleTypes(request):
     sampleTypes = SampleType.objects.all()
     data = serializers.serialize('json', sampleTypes)
     return JsonResponse({'sampleTypes': data}, safe=False)
 
 
-
+@login_required
 def getObjects(request):
     Objects = Object.objects.all()
     data = serializers.serialize('json', Objects)
     return JsonResponse({'Objects': data}, safe=False)
 
-
+@login_required
 def get_objects_report(request):
     objects = Object.objects.all()
     
@@ -311,7 +323,7 @@ def get_objects_report(request):
     }
     return render(request, 'pages/tables/objects.html', context)
 
-    
+@login_required   
 def uploadSample(request):
     context = {
         'parent': 'uploads',
@@ -319,7 +331,7 @@ def uploadSample(request):
     }
     return render(request, 'pages/forms/upload_sample.html', context)
 
-
+@login_required
 def uploadSampleProcess(request):
     if request.method == 'POST' and request.FILES:
         uploaded_file = request.FILES['file']  # 'file' should match the name attribute of your file input
@@ -412,14 +424,15 @@ def uploadSampleProcess(request):
         return JsonResponse({'error': 'No file uploaded or invalid request method!'}, status=400)
         
 
-
+@login_required
 def uploadWeight(request):
     context = {
         'parent': 'uploads',
         'segment': 'upload-weight',
         }
     return render(request, 'pages/forms/uploadWeight.html', context)
-    
+
+@login_required   
 def uploadWeightProcess(request):
     # return JsonResponse({'error': 'Invalid file format. Please upload either an Excel (.xls, .xlsx) or CSV (.csv) file.'}, status=400)
     
@@ -489,13 +502,16 @@ def uploadWeightProcess(request):
                 return JsonResponse({'success': 'All rows uploaded successfully!'}, status=200)
     else:
         return JsonResponse({'error': 'No file uploaded or invalid request method!'}, status=400)
-        
+
+@login_required       
 def uploadWeather(request):
     context = {
         'parent': 'uploads',
         'segment': 'upload-weather',
         }
     return render(request, 'pages/forms/uploadWeather.html', context)
+
+@login_required
 def uploadWeatherProcess(request):
     if request.method == 'POST' and request.FILES:
         uploaded_file = request.FILES['file']  # 'file' should match the name attribute of your file input
@@ -559,12 +575,15 @@ def uploadWeatherProcess(request):
     else:
         return JsonResponse({'error': 'No file uploaded or invalid request method!'}, status=400)
 
+@login_required
 def uploadActivity(request):
     context = {
         'parent': 'uploads',
         'segment': 'upload-activity',
         }
     return render(request, 'pages/forms/uploadActivity.html', context)
+
+@login_required
 def uploadActivityProcess(request):
 
     if request.method == 'POST' and request.FILES:
@@ -630,7 +649,7 @@ def uploadActivityProcess(request):
         return JsonResponse({'error': 'No file uploaded or invalid request method!'}, status=400)
     
 
-
+@login_required
 def deleteSample(request):
     if request.method == 'POST':
         sample_id = request.POST.get('sample_id')
@@ -650,7 +669,7 @@ def deleteSample(request):
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
     
-
+@login_required
 def deleteActivity(request):
     if request.method == 'POST':
         activity_id = request.POST.get('activity_id')
@@ -670,7 +689,7 @@ def deleteActivity(request):
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
     
-
+@login_required
 def deleteWeight(request):
     if request.method == 'POST':
         Weight_id = request.POST.get('weight_id')
@@ -690,6 +709,7 @@ def deleteWeight(request):
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
 
+@login_required
 def deleteWeather(request):
     print('Deleteweather')
     if request.method == 'POST':
@@ -709,7 +729,8 @@ def deleteWeather(request):
             return JsonResponse({'error': 'Failed to delete Weather', 'details': str(e)}, status=500)
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
-    
+
+@login_required    
 def deleteObject(request):
     if request.method == 'POST':
         object_id = request.POST.get('object_id')
@@ -735,7 +756,7 @@ def deleteObject(request):
         print('Invalid request method')
         return JsonResponse({'error': 'Invalid request method'}, status=405)
     
-    
+@login_required   
 def deleteInstrument(request):
     if request.method == 'POST':
         instrument_id = request.POST.get('instrument_id')
@@ -762,7 +783,7 @@ def deleteInstrument(request):
         print('Invalid request method')
         return JsonResponse({'error': 'Invalid request method'}, status=405)
     
-
+@login_required
 def deletePerson(request):
     if request.method == 'POST':
         person_id = request.POST.get('person_id')
